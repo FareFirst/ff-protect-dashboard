@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_28_123525) do
+ActiveRecord::Schema.define(version: 2020_03_28_175954) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -26,6 +26,28 @@ ActiveRecord::Schema.define(version: 2020_03_28_123525) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
+  create_table "alerts", force: :cascade do |t|
+    t.integer "track_request_id", null: false
+    t.string "phone", null: false
+    t.string "alert_type", null: false
+    t.datetime "first_interaction_at", null: false
+    t.datetime "last_interation_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_type"], name: "index_alerts_on_alert_type"
+    t.index ["first_interaction_at"], name: "index_alerts_on_first_interaction_at"
+    t.index ["last_interation_at"], name: "index_alerts_on_last_interation_at"
+    t.index ["phone"], name: "index_alerts_on_phone"
+    t.index ["track_request_id"], name: "index_alerts_on_track_request_id"
+  end
+
+  create_table "track_requests", force: :cascade do |t|
+    t.string "phone", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["phone"], name: "index_track_requests_on_phone"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -38,4 +60,5 @@ ActiveRecord::Schema.define(version: 2020_03_28_123525) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "alerts", "track_requests"
 end
